@@ -2,6 +2,9 @@
   "name": "to-do-list",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "gh-pages": "^4.0.0",
     "immutable": "^4.0.0-rc.12",
