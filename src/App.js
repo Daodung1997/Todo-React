@@ -16,7 +16,7 @@ class App extends Component {
         selectedColumn: '',
         taskContent: '',
         columns: fromJS([
-            { id: 'td', title: 'TO DO', tasks: [{id: 1, content: 'Demo task', time: '04/15/2019, 9:25:35 PM'}] },
+            { id: 'td', title: 'TO DO', tasks: [] },
             { id: 'ip', title: 'IN PROGRESS', tasks: [] },
             { id: 'de', title: 'DONE', tasks: [] }
         ]),
