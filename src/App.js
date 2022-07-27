@@ -115,7 +115,7 @@ class App extends Component {
             }
         ) :  columns.updateIn(
             [editingColumnIndex, 'tasks'],
-            tasks => tasks.remove(editingTaskIndex));
+            tasks => tasks.remove(editingTaskIndex)) || [];
 
         if(columnIndex !== editingColumnIndex){
             const newTask = fromJS({
