@@ -37,10 +37,18 @@ const AddNewModal = (props) => (
                 />
             </div>
             <div className="AddNewModal__action">
-                <button className="AddNewModal__btn AddNewModal__btn--confirm" onClick={props.handleAddNewTask}>
-                    Save
-                </button>
-                <button className="AddNewModal__btn AddNewModal__btn--cancel" onClick={props.handleToggleModal}>
+                {
+                    !props.isEditing ?
+                        <button className="AddNewModal__btn AddNewModal__btn--confirm" onClick={props.handleAddNewTask}>
+                            Save
+                        </button>
+                        :
+                        <button className="AddNewModal__btn AddNewModal__btn--confirm" onClick={props.handleEdit}>
+                            Update
+                        </button>
+                }
+
+                <button className="AddNewModal__btn AddNewModal__btn--cancel" onClick={props.handleCancelEdit}>
                     Cancel
                 </button>
             </div>

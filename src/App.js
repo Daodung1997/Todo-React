@@ -24,6 +24,7 @@ class App extends Component {
         editedTaskId: null
     }
 
+
     componentDidMount() {
         const columns = localStorage.getItem('columns');
         if (columns) {
@@ -31,7 +32,7 @@ class App extends Component {
         }
     }
 
-    handleToggleModal =(chooseColumn) => ()=>{
+    handleToggleModal = (chooseColumn) => ()=>{
         this.setState(prevState => ({
             displayModal: !prevState.displayModal,
             selectedColumn: chooseColumn
@@ -89,21 +90,48 @@ class App extends Component {
         }
     }
 
-    handleChooseEditTask = (columnIndex, taskIndex, taskId) => () => {
+    handleChooseEditTask = (columnIndex, taskIndex, taskId, columnId, taskContent) => () => {
         this.setState({
             editingColumnIndex: columnIndex,
             editingTaskIndex: taskIndex,
-            editedTaskId: taskId
+            editedTaskId: taskId,
+            displayModal: true,
+            selectedColumn: columnId,
+            taskContent: taskContent
         })
+
     }
     handleEdit = () => {
-        const { columns, editingColumnIndex, taskContent, editingTaskIndex } = this.state;
-        const updatedColumn = columns.updateIn(
+        const { columns, editingColumnIndex, taskContent, editingTaskIndex, selectedColumn } = this.state;
+        if(!taskContent){
+            return toastr.warning('Please enter your task', 'Notice', { timeOut: 2000 });
+        }
+        const columnIndex = columns.findIndex(column => column.get('id') === selectedColumn);
+
+        let updatedColumn = columnIndex === editingColumnIndex ? columns.updateIn(
             [editingColumnIndex, 'tasks'],
-            tasks => tasks.setIn([editingTaskIndex, 'content'], taskContent)
-        );
+            tasks => {
+                tasks.setIn([editingTaskIndex, 'content'], taskContent);
+            }
+        ) :  columns.updateIn(
+            [editingColumnIndex, 'tasks'],
+            tasks => tasks.remove(editingTaskIndex));
+
+        if(columnIndex !== editingColumnIndex){
+            const newTask = fromJS({
+                id: uuidv4(),
+                content: taskContent,
+                time: new Date().toLocaleString()
+            });
+
+            updatedColumn = updatedColumn.updateIn(
+                [columnIndex, 'tasks'],
+                tasks => tasks.push(newTask)
+            );
+        }
         this.setState({
             editingColumnIndex: '',
+            displayModal: false,
             taskContent: '',
             editedTaskId: null,
             editingTaskIndex: null,
@@ -118,7 +146,8 @@ class App extends Component {
             editingColumnIndex: '',
             taskContent: '',
             editedTaskId: null,
-            editingTaskIndex: null
+            editingTaskIndex: null,
+            displayModal: false,
         });
     }
 
@@ -171,12 +200,9 @@ class App extends Component {
                                                     column.get('tasks').map((task, taskIndex) => (
                                                         <Task key={task.get('id')}
                                                               index={taskIndex}
-                                                              isEditing={task.get('id') === editedTaskId}
                                                               handleChangeTaskContent={this.handleChangeTaskContent}
                                                               task={task}
-                                                              handleEdit={this.handleEdit}
-                                                              handleCancelEdit={this.handleCancelEdit}
-                                                              handleChooseEditTask={this.handleChooseEditTask(columnIndex, taskIndex, task.get('id'))}
+                                                              handleChooseEditTask={this.handleChooseEditTask(columnIndex, taskIndex, task.get('id'), column.get('id'), task.get('content'))}
                                                               handleDeleteTask={this.handleDeleteTask(columnIndex, taskIndex)} />
                                                     ))
                                                 }
@@ -192,7 +218,7 @@ class App extends Component {
                 </DragDropContext>
                 {displayModal &&
                 <AddNewModal
-                    handleToogleModal={this.handleToggleModal}
+                    handleToggleModal={this.handleToggleModal}
                     selectedColumn={this.state.selectedColumn}
                     handleChangeSelectedColumn={this.handleChangeSelectedColumn}
                     taskContent={taskContent}
@@ -200,6 +226,9 @@ class App extends Component {
                     handleAddNewTask ={this.handleAddNewTask}
                     handleChangeEditingColumnIndex={this.handleChangeEditingColumnIndex}
                     editingColumnIndex={editingColumnIndex}
+                    isEditing={editedTaskId}
+                    handleEdit={this.handleEdit}
+                    handleCancelEdit={this.handleCancelEdit}
 
                 />}
             </div>
