@@ -1,0 +1,43 @@
+
+.count-page{
+    width: 380px;
+    margin: 0 auto;
+    background-color: #cccccc;
+    padding: 20px;
+  .form-counter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+
+    button{
+      padding: 10px 20px;
+      font-weight: bold;
+    }
+    span{
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+  .form-amount{
+    &__input{
+      input{
+        display: block;
+        width: calc(100% - 30px) ;
+        height: 36px;
+        border: none;
+        padding: 0 8px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        &:focus{
+          border: none;
+          outline: none;
+        }
+      }
+    }
+    button{
+      padding: 10px 20px;
+      font-weight: bold;
+    }
+  }
+}

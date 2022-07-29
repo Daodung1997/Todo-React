@@ -1,0 +1,35 @@
+.calculator{
+  width: 400px;
+  margin: 0 auto;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  &__buttons{
+    display: flex;
+    background-color: #cccccc;
+    flex-wrap: wrap;
+    padding: 10px;
+    button{
+      width: 85px;
+      height: 40px;
+      margin-bottom: 20px;
+      margin-right: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  }
+  &__view{
+    min-height: 90px;
+    padding: 20px;
+    background-color: #a09c9c;
+    color: #ffffff;
+    text-align: right;
+    &--result{
+      font-size: 30px;
+      margin-top: 30px;
+    }
+    &--text{
+      letter-spacing: 2px;
+    }
+  }
+
+}

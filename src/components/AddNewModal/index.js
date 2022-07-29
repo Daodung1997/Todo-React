@@ -4,7 +4,7 @@ import './style.scss';
 
 const AddNewModal = (props) => (
     <div className="AddNewModal">
-        <div className="AddNewModal__backdrop"></div>
+        <div className="AddNewModal__backdrop" onClick={props.handleCancelEdit}></div>
         <div className="AddNewModal__content">
             <h4 className="AddNewModal__title">
                 CREATE NEW TASK
@@ -47,7 +47,6 @@ const AddNewModal = (props) => (
                             Update
                         </button>
                 }
-
                 <button className="AddNewModal__btn AddNewModal__btn--cancel" onClick={props.handleCancelEdit}>
                     Cancel
                 </button>
